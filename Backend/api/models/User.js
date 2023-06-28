@@ -1,46 +1,22 @@
-const Joi = require('@hapi/joi')
-
 module.exports = {
 
   attributes: {
-
     email: {
       type: 'string',
       unique: true,
       required: true,
-      validate: (value) => {
-        const schema = Joi.string().email().required()
-        const error = schema.validate(value);
-        if (error) {
-          throw new Error('Invalid email')
-        }
-      }
+      isEmail: true
     },
-
     password: {
       type: 'string',
       required: true,
-      validate: (value) => {
-        const schema = Joi.string().min(6).required()
-        const error = schema.validate(value)
-        if (error) {
-          throw new Error('Passwor must be at least 6 characters long')
-        }
-      }
+      minLength: 6
     },
-
     fullName: {
       type: 'string',
       required: true,
-      validate: (value) => {
-        const schema = Joi.string().min(2).required()
-        const error = schema.validate(value)
-        if (error) {
-          throw new Error('Fullname must be at least 3 characters long')
-        }
-      }
+      minLength: 4
     },
-
     phone: { type: 'string', },
     nickName: { type: 'string' },
     address: { type: 'string' },

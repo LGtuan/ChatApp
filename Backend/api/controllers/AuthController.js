@@ -1,12 +1,12 @@
 const AuthService = require("../services/AuthService")
 const moment = require("moment")
 
-
 module.exports = {
     async login(req, res) {
         const { email, password } = req.body
         try {
-            await User.validate({ email, password })
+            User.validate('email', email)
+            User.validate('password', password)
 
             let userExisting = await User.findOne({ email });
             if (!userExisting) {
@@ -35,7 +35,9 @@ module.exports = {
         const { email, password, fullName } = req.body
 
         try {
-            await User.validate(email, password, fullName)
+            User.validate('email', email)
+            User.validate('password', password)
+            User.validate('fullName', fullName)
 
             const existingUser = await User.findOne({ email })
             if (existingUser) {
@@ -45,10 +47,11 @@ module.exports = {
             const newUser = await User.create({
                 email,
                 password: AuthService.hashPassword(password),
-                fullName
+                fullName,
+                nickName: fullName
             }).fetch()
 
-            return res.json({ message: 'success', err: 200 })
+            return res.json({ message: 'success', err: 200, ...newUser })
         } catch (error) {
             return res.json({ message: error.message, err: 500 })
         }
