@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.frontend.R;
 
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonLogin, buttonShowForgotPass;
     private ImageButton buttonBack;
     private EditText editEmail, editPassword;
+    private TextView textError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin = findViewById(R.id.btn_login);
         buttonBack = findViewById(R.id.btn_back_login);
         buttonShowForgotPass = findViewById(R.id.btn_show_forgot_pass);
+        textError = findViewById(R.id.text_error_login);
+        editPassword = findViewById(R.id.edit_password_login);
+        editEmail = findViewById(R.id.edit_email_login);
 
         buttonBack.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
@@ -36,6 +41,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login () {
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
+
+        if(email.equals("") || password.equals("")){
+            textError.setText("Invalid input field.");
+        }
+
 
     }
 

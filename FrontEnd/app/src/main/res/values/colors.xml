@@ -10,4 +10,5 @@
     <color name="primary">#40744d</color>
     <color name="primary_70">#40744D</color>
     <color name="transparent">@android:color/transparent</color>
+    <color name="wrong">#D30B0B</color>
 </resources>

@@ -54,7 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <EditText
-                android:id="@+id/edit_email_register"
+                android:id="@+id/edit_email_login"
                 style="@style/EditTextPrimary"
                 android:layout_marginTop="50dp"
                 android:drawableStart="@drawable/email_icon"
@@ -71,7 +71,7 @@
                 android:hint="Enter your name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_email_register" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_email_login" />
 
             <EditText
                 android:layout_marginTop="20dp"

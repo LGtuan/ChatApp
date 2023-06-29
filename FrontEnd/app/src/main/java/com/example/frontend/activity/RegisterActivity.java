@@ -25,16 +25,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initView(){
-        editEmail = findViewById(R.id.edit_email_register);
+        editEmail = findViewById(R.id.edit_email_login);
         editName = findViewById(R.id.edit_name_register);
         editPassword = findViewById(R.id.edit_password_register);
         editConfirmPassword = findViewById(R.id.edit_password2_register);
         buttonRegister = findViewById(R.id.btn_register);
         buttonBack = findViewById(R.id.btn_back_register);
+
+        buttonRegister.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
     }
 
     private void register(){
-
+        String email = editEmail.getText().toString();
+        String name = editName.getText().toString();
+        String password = editPassword.getText().toString();
+        String confirmPass = editConfirmPassword.getText().toString();
     }
 
     @Override
