@@ -57,4 +57,8 @@ module.exports.http = {
 
   },
 
+  http: {
+    trustProxy: false
+  }
+
 };
