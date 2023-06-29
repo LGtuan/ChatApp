@@ -17,6 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/btn_back_login"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/circle_shape"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/password_icon"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="500dp"
@@ -48,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <EditText
-            android:id="@+id/edit_email_login"
+            android:id="@+id/edit_email_register"
             style="@style/EditTextPrimary"
             android:layout_marginTop="50dp"
             android:drawableStart="@drawable/email_icon"
@@ -65,16 +78,28 @@
             android:hint="Enter your password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_email_login" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_email_register" />
+
+        <Button
+            android:textSize="16sp"
+            android:id="@+id/btn_show_forgot_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@color/transparent"
+            android:text="Forgot password ?"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            app:layout_constraintEnd_toEndOf="@+id/edit_password_login"
+            app:layout_constraintTop_toBottomOf="@+id/edit_password_login" />
 
         <Button
             android:id="@+id/btn_login"
-            android:text="Login"
-            android:layout_marginTop="60dp"
             style="@style/ButtonPrimary"
             android:layout_width="0dp"
+            android:layout_marginTop="50dp"
+            android:text="Login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/edit_password_login" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_show_forgot_pass" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

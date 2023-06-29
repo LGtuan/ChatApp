@@ -11,7 +11,9 @@ import android.widget.ImageButton;
 
 import com.example.frontend.R;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class ForgotPassActivity extends AppCompatActivity implements View.OnClickListener {
+
     private Button buttonLogin, buttonShowForgotPass;
     private ImageButton buttonBack;
     private EditText editEmail, editPassword;
@@ -19,7 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forgot_pass);
 
         initView();
 
@@ -40,8 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showForgotPassActivity(){
-        Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
-        startActivity(intent);
+
     }
 
     @Override
@@ -54,7 +55,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.btn_show_forgot_pass:
-                showForgotPassActivity();
+
+                break;
+            default:
                 break;
         }
     }
