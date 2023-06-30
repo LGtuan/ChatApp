@@ -67,7 +67,7 @@ module.exports.sockets = {
   //   return done();
   //
   // },
-
+  onlyAllowOrigins: ["http://www.mydeployedapp.com", "http://mydeployedapp.com"]
 
   /***************************************************************************
   *                                                                          *
