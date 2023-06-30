@@ -66,5 +66,5 @@ module.exports = {
     internalEmailAddress: 'support@example.com',
   },
 
-  hookTimeout: 40000
+  hookTimeout: 320000
 };
