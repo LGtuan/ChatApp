@@ -44,6 +44,7 @@ module.exports = {
 
   sockets: {
 
+    onlyAllowOrigins: ["http://www.mydeployedapp.com", "http://mydeployedapp.com"]
   },
 
   log: {
