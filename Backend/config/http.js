@@ -3,6 +3,6 @@ module.exports.http = {
 
   },
 
-  trustProxy: true
+  trustProxy: false
 
 };
