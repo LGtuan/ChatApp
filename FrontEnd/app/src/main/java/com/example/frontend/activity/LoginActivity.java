@@ -4,13 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.example.frontend.R;
+import com.example.frontend.api.RequestApi;
+import com.example.frontend.api.VolleyCallBack;
+import com.example.frontend.config.Utilities;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button buttonLogin, buttonShowForgotPass;
@@ -46,9 +57,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(email.equals("") || password.equals("")){
             textError.setText("Invalid input field.");
+            return;
         }
 
+        String path = "api/login";
+        Map<String,String> params = new HashMap<>();
+        params.put("email",email);
+        params.put("password", password);
 
+        RequestApi.SendRequest(this, path, params, new VolleyCallBack() {
+            @Override
+            public void onSuccess(String data) {
+                try {
+                    JSONObject object = new JSONObject(data);
+                    if(object.getInt("err") == 200){
+                        Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
+                        startActivity(intent);
+                    }else {
+
+                    }
+
+                    Utilities.hideLoading();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Log.e("ABCD", error.toString());
+                Utilities.hideLoading();
+            }
+        });
     }
 
     private void showForgotPassActivity(){

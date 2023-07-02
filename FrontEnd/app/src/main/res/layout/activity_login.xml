@@ -8,7 +8,7 @@
     tools:context=".activity.LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
@@ -27,7 +27,8 @@
         android:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/password_icon"
+        android:src="@drawable/icon_back"
+        android:paddingEnd="4dp"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -26,8 +26,9 @@
                 android:backgroundTint="@color/primary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/password_icon"
-                app:tint="@color/white" />
+                android:src="@drawable/icon_back"
+                app:tint="@color/white"
+                android:paddingEnd="4dp"/>
 
             <TextView
                 android:layout_marginTop="80dp"
