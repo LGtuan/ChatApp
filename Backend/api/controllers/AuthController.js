@@ -32,12 +32,16 @@ module.exports = {
     },
 
     async register(req, res) {
-        const { email, password, fullName } = req.body
+        const { email, password, confirmPassword, fullName } = req.body
 
         try {
             User.validate('email', email)
             User.validate('password', password)
             User.validate('fullName', fullName)
+
+            if (password != confirmPassword) {
+                return res.json({ message: 'Password is not match', err: 400 })
+            }
 
             const existingUser = await User.findOne({ email })
             if (existingUser) {

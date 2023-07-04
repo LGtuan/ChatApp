@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <EditText
-                android:id="@+id/edit_email_login"
+                android:id="@+id/edit_email_register"
                 style="@style/EditTextPrimary"
                 android:layout_marginTop="50dp"
                 android:drawableStart="@drawable/email_icon"
@@ -72,7 +72,7 @@
                 android:hint="Enter your name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_email_login" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_email_register" />
 
             <EditText
                 android:layout_marginTop="20dp"
@@ -80,6 +80,7 @@
                 style="@style/EditTextPrimary"
                 android:drawableStart="@drawable/password_icon"
                 android:hint="Enter your password"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_name_register" />
@@ -90,10 +91,22 @@
                 style="@style/EditTextPrimary"
                 android:drawableStart="@drawable/password_icon"
                 android:hint="Confirm your password"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_password_register" />
 
+            <TextView
+                android:id="@+id/text_error_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingEnd="5dp"
+                android:textColor="@color/wrong"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/edit_password2_register"
+                app:layout_constraintTop_toBottomOf="@+id/edit_password2_register" />
 
             <Button
                 android:layout_marginTop="50dp"

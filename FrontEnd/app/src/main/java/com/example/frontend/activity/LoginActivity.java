@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonShowForgotPass = findViewById(R.id.btn_show_forgot_pass);
         textError = findViewById(R.id.text_error_login);
         editPassword = findViewById(R.id.edit_password_login);
-        editEmail = findViewById(R.id.edit_email_login);
+        editEmail = findViewById(R.id.edit_email_register);
 
         buttonBack.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     JSONObject object = new JSONObject(data);
                     if(object.getInt("err") == 200){
-                        Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }else {
 
