@@ -21,7 +21,7 @@ module.exports = {
     nickName: { type: 'string' },
     address: { type: 'string' },
     birthDay: { type: 'number' },
-    access_token: { type: 'string' },
+    accessToken: { type: 'string' },
     lastLogin: { type: 'number' },
     rooms: {
       collection: 'room',

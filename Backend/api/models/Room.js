@@ -8,10 +8,13 @@
 module.exports = {
 
   attributes: {
-
+    name: { type: 'string', required: true },
     users: {
       collection: 'user',
       via: 'rooms'
+    },
+    messages: {
+      collection: 'message'
     }
 
   },

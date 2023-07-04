@@ -1,5 +1,6 @@
 const AuthService = require("../services/AuthService")
 const moment = require("moment")
+const _ = require('@sailshq/lodash')
 
 module.exports = {
     async login(req, res) {
@@ -20,14 +21,17 @@ module.exports = {
             }
 
             const token = AuthService.generateToken({ email })
-            await User.updateOne({ email }).set({
+
+            let user = await User.updateOne({ email }).set({
                 accessToken: token,
                 lastLogin: moment.now()
-            })
+            }).fetch()
 
-            return res.json({ message: 'Login success', err: 200 })
-        } catch (err) {
-            return res.json({ err: 500, message: err.message })
+            user = _.pick(user, ['nickName', 'email', 'accessToken', 'id'])
+
+            return res.json({ message: 'Login success', err: 200, data: user })
+        } catch (error) {
+            return res.json({ err: 500, message: error.message })
         }
     },
 
@@ -48,14 +52,16 @@ module.exports = {
                 return res.json({ message: 'User already exist', err: 400 })
             }
 
-            const newUser = await User.create({
+            let newUser = await User.create({
                 email,
                 password: AuthService.hashPassword(password),
                 fullName,
                 nickName: fullName
             }).fetch()
 
-            return res.json({ message: 'success', err: 200, ...newUser })
+            newUser = _.pick(newUser, ['nickName', 'email', 'id'])
+
+            return res.json({ message: 'Register success', err: 200, data: newUser })
         } catch (error) {
             return res.json({ message: error.message, err: 500 })
         }

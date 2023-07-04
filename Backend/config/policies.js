@@ -12,6 +12,9 @@ module.exports.policies = {
 
   AuthController: {
     'logout': 'verifyToken'
+  },
+  UserController: {
+    'find': 'verifyToken'
   }
 
 };
