@@ -5,7 +5,7 @@ var secretKey = process.env.SECRET_KEY
 
 module.exports = {
     generateToken(payload) {
-        const token = jwt.sign(payload, secretKey, { expiresIn: '3h' })
+        const token = jwt.sign(payload, secretKey, { expiresIn: '10h' })
         return token
     },
     hashPassword(password) {

@@ -26,8 +26,12 @@ module.exports = {
     rooms: {
       collection: 'room',
       via: 'users',
+    },
+    friends: {
+      type: 'json',
+      columnType: 'array',
+      defaultsTo: []
     }
   },
-
 };
 

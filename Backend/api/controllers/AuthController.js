@@ -20,7 +20,7 @@ module.exports = {
                 return res.json({ message: 'Invalid email or password', err: 401 })
             }
 
-            const token = AuthService.generateToken({ email })
+            const token = AuthService.generateToken({ id: userExisting.id })
 
             let user = await User.updateOne({ email }).set({
                 accessToken: token,

@@ -14,7 +14,13 @@ module.exports.policies = {
     'logout': 'verifyToken'
   },
   UserController: {
-    'find': 'verifyToken'
+    'find': 'verifyToken',
+    'findFriend': 'verifyToken',
+    'requestAddFriend': 'verifyToken',
+    'confirmAddFriend': 'verifyToken',
+    'recallAddFriend': 'verifyToken',
+    'rejectAddFriend': 'verifyToken',
+    'deleteFriend': 'verifyToken'
   }
 
 };

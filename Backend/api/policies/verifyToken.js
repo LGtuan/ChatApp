@@ -13,6 +13,12 @@ module.exports = async function (req, res, next) {
             if (err) {
                 return res.json({ message: err.message, err: 401 })
             }
+
+            let id = req.body.userId
+            if (id != decodedToken.id) {
+                return res.json({ message: 'Invalid Token', err: 401 })
+            }
+
             next()
         })
     } catch (err) {
