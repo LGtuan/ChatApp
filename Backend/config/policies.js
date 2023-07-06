@@ -21,6 +21,10 @@ module.exports.policies = {
     'recallAddFriend': 'verifyToken',
     'rejectAddFriend': 'verifyToken',
     'deleteFriend': 'verifyToken'
+  },
+  RoomController: {
+    'createRoom': 'verifyToken',
+    'findRoom': 'verifyToken'
   }
 
 };

@@ -15,5 +15,9 @@ module.exports.routes = {
   'POST /api/user/confirmAddFriend': 'UserController.confirmAddFriend',
   'POST /api/user/recallAddFriend': 'UserController.recallAddFriend',
   'POST /api/user/rejectAddFriend': 'UserController.rejectAddFriend',
+  'POST /api/user/deleteFriend': 'UserController.deleteFriend',
+
+  'POST /api/room/createRoom': 'RoomController.createRoom',
+  'POST /api/room/findRoom': 'RoomController.findRoom'
 
 };

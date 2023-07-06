@@ -9,7 +9,7 @@ module.exports = {
             User.validate('email', email)
             User.validate('password', password)
 
-            let userExisting = await User.findOne({ email });
+            let userExisting = await User.findOne({ email: email ?? '' });
             if (!userExisting) {
                 return res.json({ message: 'Invalid email or password', err: 401 });
             }
@@ -25,7 +25,7 @@ module.exports = {
             let user = await User.updateOne({ email }).set({
                 accessToken: token,
                 lastLogin: moment.now()
-            }).fetch()
+            })
 
             user = _.pick(user, ['nickName', 'email', 'accessToken', 'id'])
 
@@ -57,7 +57,7 @@ module.exports = {
                 password: AuthService.hashPassword(password),
                 fullName,
                 nickName: fullName
-            }).fetch()
+            })
 
             newUser = _.pick(newUser, ['nickName', 'email', 'id'])
 
