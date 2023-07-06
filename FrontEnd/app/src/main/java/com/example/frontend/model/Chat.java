@@ -1,2 +1,4 @@
-package com.example.frontend.model;public class Chat {
+package com.example.frontend.model;
+
+public class Chat {
 }

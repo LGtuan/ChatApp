@@ -3,6 +3,7 @@ package com.example.frontend.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,23 +61,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        String path = "api/login";
+        String path = "api/user/login";
         Map<String,String> params = new HashMap<>();
         params.put("email",email);
         params.put("password", password);
 
-        RequestApi.SendRequest(this, path, params, new VolleyCallBack() {
+        RequestApi.sendRequest(this, path, params, new VolleyCallBack() {
             @Override
-            public void onSuccess(String data) {
+            public void onSuccess(String json) {
                 try {
-                    JSONObject object = new JSONObject(data);
+                    JSONObject object = new JSONObject(json);
+                    JSONObject data = object.getJSONObject("data");
                     if(object.getInt("err") == 200){
+                        SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences("auth",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("accessToken", data.getString("accessToken"));
+                        editor.putString("email", data.getString("email"));
+                        editor.putString("nickName", data.getString("nickName"));
+                        editor.putString("id", data.getString("id"));
+                        editor.apply();
+
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }else {
 
                     }
-
                     Utilities.hideLoading();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);

@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.example.frontend.R;
 import com.example.frontend.fragment.ChatListFragment;
-import com.example.frontend.fragment.FriendFragment;
+import com.example.frontend.fragment.CommunityFragment;
 import com.example.frontend.fragment.SettingFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingFragment()).commit();
                 break;
             case R.id.nav_friend:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FriendFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CommunityFragment()).commit();
                 break;
             case R.id.nav_logout:
                 break;
@@ -74,5 +74,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

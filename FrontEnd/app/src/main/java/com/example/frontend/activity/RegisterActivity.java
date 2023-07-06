@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         params.put("confirmPassword",confirmPass);
         params.put("fullName", name);
 
-        RequestApi.SendRequest(this, path, params, new VolleyCallBack() {
+        RequestApi.sendRequest(this, path, params, new VolleyCallBack() {
             @Override
             public void onSuccess(String data) {
                 try {
