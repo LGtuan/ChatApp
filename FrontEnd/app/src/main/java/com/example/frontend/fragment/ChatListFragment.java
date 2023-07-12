@@ -1,8 +1,5 @@
 package com.example.frontend.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,11 +15,10 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 import com.example.frontend.R;
-import com.example.frontend.activity.HomeActivity;
-import com.example.frontend.activity.LoginActivity;
 import com.example.frontend.adapter.RoomAdapter;
 import com.example.frontend.api.RequestApi;
 import com.example.frontend.api.VolleyCallBack;
+import com.example.frontend.config.Constant;
 import com.example.frontend.config.Utilities;
 import com.example.frontend.model.Room;
 
@@ -33,25 +29,17 @@ import java.util.Arrays;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class ChatListFragment extends Fragment {
 
     private Button button;
-    private Socket socket;
+    public static Socket SOCKET;
     private ArrayList<Room> listRoom = new ArrayList<>();
     private RecyclerView recyclerView;
     private RoomAdapter roomAdapter;
@@ -65,7 +53,7 @@ public class ChatListFragment extends Fragment {
     }
 
     private void getListRoom() {
-        String path = "api/room/findRoom";
+        String path = "api/doubleChat/getListRoom";
         Map<String,String> params = new HashMap<>();
         RequestApi.sendRequest(this.getContext(), path, params, new VolleyCallBack() {
             @Override
@@ -80,7 +68,9 @@ public class ChatListFragment extends Fragment {
                                     roomJson.getString("id"),
                                     roomJson.getLong("updatedAt"),
                                     roomJson.getLong("createdAt"),
-                                    roomJson.getString("name")
+                                    roomJson.getString("name"),
+                                    roomJson.getString("user1"),
+                                    roomJson.getString("user2")
                             );
                             listRoom.add(room);
                         }
@@ -103,9 +93,9 @@ public class ChatListFragment extends Fragment {
 
     private void connectSocket () {
         try {
-            socket = IO.socket("http://192.168.0.156:1337/?__sails_io_sdk_version=0.11.0");
-            listenSocketEvent(socket);
-            socket.connect();
+            SOCKET = IO.socket(Constant.URL+"?__sails_io_sdk_version=0.11.0");
+            listenSocketEvent(SOCKET);
+            SOCKET.connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,6 +110,14 @@ public class ChatListFragment extends Fragment {
 
         socket.on("message", args -> {
             Log.d("Message", Arrays.toString(args));
+        });
+
+        socket.on("newChatRoom", args -> {
+            Log.d("new chat room", Arrays.toString(args));
+        });
+
+        socket.on("receiveMessage", args -> {
+            Log.d("receive Message", Arrays.toString(args));
         });
     }
 
@@ -155,11 +153,5 @@ public class ChatListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        socket.disconnect();
     }
 }

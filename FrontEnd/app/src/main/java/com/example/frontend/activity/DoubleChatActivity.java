@@ -1,7 +1,7 @@
 package com.example.frontend.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.frontend.R;
 import android.os.Bundle;
 
 public class DoubleChatActivity extends AppCompatActivity {

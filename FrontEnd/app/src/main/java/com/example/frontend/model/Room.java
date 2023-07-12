@@ -9,15 +9,23 @@ public class Room implements Serializable {
     private long updateAt;
     private long createdAt;
     private String name;
+    private String user1;
+    private String user2;
 
     public Room() {
     }
 
-    public Room(String id, long updateAt, long createdAt, String name) {
+    public Room(String name) {
+        this.name = name;
+    }
+
+    public Room(String id, long updateAt, long createdAt, String name, String user1, String user2) {
         this.id = id;
         this.updateAt = updateAt;
         this.createdAt = createdAt;
         this.name = name;
+        this.user1 = user1;
+        this.user2 = user2;
     }
 
     @NonNull
@@ -56,5 +64,21 @@ public class Room implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUser1() {
+        return user1;
+    }
+
+    public void setUser1(String user1) {
+        this.user1 = user1;
+    }
+
+    public String getUser2() {
+        return user2;
+    }
+
+    public void setUser2(String user2) {
+        this.user2 = user2;
     }
 }

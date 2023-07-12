@@ -6,4 +6,73 @@
     android:layout_height="match_parent"
     tools:context=".activity.DoubleChatActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/primary"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back_double_chat"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/back_icon"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/txt_name_double_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:text="Room"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btn_more_double_chat"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/baseline_more_vert_24"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:layout_marginBottom="50dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <EditText
+            android:id="@+id/edt_double_chat"
+            android:paddingStart="10dp"
+            android:hint="Enter text"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/border"/>
+        <ImageButton
+            android:id="@+id/btn_send_double_chat"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/baseline_send_24"
+            app:tint="@color/primary" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

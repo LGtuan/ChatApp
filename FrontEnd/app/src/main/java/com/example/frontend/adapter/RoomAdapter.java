@@ -31,12 +31,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.room_item,parent, false));
+                .inflate(R.layout.chat_item,parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("bug", position+"");
         holder.txtName.setText(list.get(position).getName());
         holder.txtChat.setText(list.get(position).getName());
     }
@@ -51,13 +50,13 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
         TextView txtName, txtChat;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.image_room_item);
-            txtName = itemView.findViewById(R.id.txt_name_room_item);
-            txtChat = itemView.findViewById(R.id.txt_chat_room_item);
+            img = itemView.findViewById(R.id.image_chat_item);
+            txtName = itemView.findViewById(R.id.txt_name_chat_item);
+            txtChat = itemView.findViewById(R.id.txt_chat_chat_item);
 
             itemView.setOnClickListener(v-> {
-                Log.d("Room", "click");
                 Room room = list.get(getAdapterPosition());
+                Log.d("Room", room.getId());
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("room", room);
                 context.startActivity(intent);

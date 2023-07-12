@@ -7,21 +7,22 @@ public class User {
     private String nickName;
     private String phone;
     private String birthDay;
-    private Room[] rooms;
-    private User[] friends;
 
     public User() {
     }
 
-    public User(String id, String email, String fullName, String nickName, String phone, String birthDay, Room[] rooms, User[] friends) {
+    public User(String id, String nickName) {
+        this.id = id;
+        this.nickName = nickName;
+    }
+
+    public User(String id, String email, String fullName, String nickName, String phone, String birthDay) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.nickName = nickName;
         this.phone = phone;
         this.birthDay = birthDay;
-        this.rooms = rooms;
-        this.friends = friends;
     }
 
     public String getId() {
@@ -70,21 +71,5 @@ public class User {
 
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
-    }
-
-    public Room[] getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Room[] rooms) {
-        this.rooms = rooms;
-    }
-
-    public User[] getFriends() {
-        return friends;
-    }
-
-    public void setFriends(User[] friends) {
-        this.friends = friends;
     }
 }
