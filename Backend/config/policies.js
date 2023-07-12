@@ -25,6 +25,10 @@ module.exports.policies = {
   RoomController: {
     'createRoom': 'verifyToken',
     'findRoom': 'verifyToken'
+  },
+  ChatController: {
+    'sendMessage': 'verifyToken',
+    'getListMessage': 'verifyToken'
   }
 
 };

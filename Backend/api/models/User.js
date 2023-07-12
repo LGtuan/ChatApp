@@ -23,15 +23,18 @@ module.exports = {
     birthDay: { type: 'number' },
     accessToken: { type: 'string' },
     lastLogin: { type: 'number' },
-    rooms: {
-      collection: 'room',
-      via: 'users',
-    },
-    friends: {
-      type: 'json',
-      columnType: 'array',
-      defaultsTo: []
-    }
+    // rooms: {
+    //   collection: 'room',
+    //   via: 'user',
+    //   through: 'roomuser'
+    // },
+    // friendShips: {
+    //   // type: 'json',
+    //   // columnType: 'array',
+    //   // defaultsTo: []
+    //   collection: 'friendShip',
+    //   via: 'users'
+    // }
   },
 };
 

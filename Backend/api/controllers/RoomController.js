@@ -1,9 +1,9 @@
 module.exports = {
 
     async createRoom(req, res) {
-        if (!req.isSocket) {
-            return res.json({ err: 400, message: 'Require socket requrest.' })
-        }
+        // if (!req.isSocket) {
+        //     return res.json({ err: 400, message: 'Require socket requrest.' })
+        // }
         const { userId, roomName = 'Room' } = req.body;
         try {
             const user = await User.findOne({ id: userId })
@@ -15,17 +15,14 @@ module.exports = {
                 users: [userId]
             })
             const roomId = newChatRoom.id
+            // sails.sockets.broadcast(
+            //         roomId,
+            //         {
+            //             message: `${user.nickName} has create this room`
+            //         }
+            //     );
+            return res.json({ err: 200, message: 'Create success', data: { roomId } })
 
-            sails.sockets.join(req.socket, roomId, (error) => {
-                if (error) return res.json({ err: 500, message: error.message })
-                sails.sockets.broadcast(
-                    roomId,
-                    {
-                        message: `${user.nickName} has create this room`
-                    }
-                );
-                return res.json({ err: 200, message: 'Create success' })
-            });
         } catch (error) {
             return res.json({ err: 500, message: error.message })
         }
@@ -33,8 +30,8 @@ module.exports = {
     },
 
     joinRoom: async function (req, res) {
-        if (!req.isSocket)
-            return res.json({ err: 400, message: 'Require socket request.' })
+        // if (!req.isSocket)
+        //     return res.json({ err: 400, message: 'Require socket request.' })
 
         const { userId, roomId } = req.body;
         try {
@@ -49,23 +46,14 @@ module.exports = {
             }
             await Room.addToCollection(roomId, 'users', userId)
 
-            sails.sockets.join(req.socket, roomId, async (error) => {
-                if (error) return res.json({ err: 500, message: error.message })
+            // sails.sockets.broadcast(
+            //     room,
+            //     {
+            //         message: `${user.nickName} had join this room`
+            //     }
+            // );
 
-                Room.updateOne({ id: roomId })
-                    .set({
-                        $push: { users: userId }
-                    })
-
-                sails.sockets.broadcast(
-                    room,
-                    {
-                        message: `${user.nickName} had join this room`
-                    }
-                );
-
-                return res.json({ err: 200, message: 'Join success' })
-            });
+            return res.json({ err: 200, message: 'Join success' })
         } catch (error) {
             return res.json({ err: 500, message: error.message })
         }
@@ -123,6 +111,26 @@ module.exports = {
             if (!user) return res.json({ err: 404, message: 'User not found' })
 
             return res.json({ err: 200, data: user.rooms ?? [], message: 'Get success' })
+        } catch (error) {
+            res.json({ err: 500, message: error.message })
+        }
+    },
+
+    connectRoom: async function (req, res) {
+        if (!req.isSocket) {
+            return res.json({ err: 400, message: 'Require socket requrest.' })
+        }
+        const { roomId } = req.body
+        if (!roomId) {
+            return res.json({ err: 400, message: 'Invalid data request' })
+        }
+
+        try {
+            sails.sockets.join(req.socket, roomId, (error) => {
+                if (error) return res.json({ err: 500, message: error.message })
+                console.log('join success')
+                return res.json({ err: 200, message: 'connect success' })
+            });
         } catch (error) {
             res.json({ err: 500, message: error.message })
         }

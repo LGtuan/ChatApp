@@ -1,8 +1,8 @@
 module.exports = {
   attributes: {
-    roomId: { model: 'Room', required: true },
-    userId: { model: 'User', required: true },
-    content: { type: 'string', required: true }
-
+    room: { model: 'Room', required: false },
+    user: { model: 'User', required: true },
+    content: { type: 'string', required: true },
+    doubleRoom: { model: 'DoubleRoom', required: false }
   },
 };
