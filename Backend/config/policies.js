@@ -15,12 +15,12 @@ module.exports.policies = {
   },
   UserController: {
     'find': 'verifyToken',
-    'findFriend': 'verifyToken',
-    'requestAddFriend': 'verifyToken',
-    'confirmAddFriend': 'verifyToken',
-    'recallAddFriend': 'verifyToken',
-    'rejectAddFriend': 'verifyToken',
-    'deleteFriend': 'verifyToken'
+    // 'findFriend': 'verifyToken',
+    // 'requestAddFriend': 'verifyToken',
+    // 'confirmAddFriend': 'verifyToken',
+    // 'recallAddFriend': 'verifyToken',
+    // 'rejectAddFriend': 'verifyToken',
+    // 'deleteFriend': 'verifyToken'
   },
   RoomController: {
     'createRoom': 'verifyToken',

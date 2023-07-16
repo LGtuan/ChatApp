@@ -25,6 +25,7 @@ module.exports.routes = {
   'POST /api/doubleChat/startChat': 'DoubleChatController.startChat',
   'POST /api/doubleChat/sendMessage': 'DoubleChatController.sendMessage',
   'POST /api/doubleChat/getListMessage': 'DoubleChatController.getListMessage',
-  'POST /api/doubleChat/getListRoom': 'DoubleChatController.getListRoom'
+  'POST /api/doubleChat/getListRoom': 'DoubleChatController.getListRoom',
+  'POST /api/doubleChat/connectWithServer': 'DoubleChatController.connectWithServer',
 
 };

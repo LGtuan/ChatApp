@@ -1,7 +1,7 @@
 module.exports = {
     async find(req, res) {
         const { page = 1, limit = 10 } = req.query
-        const { nickName } = req.body
+        const { nickName, userId } = req.body
 
         const options = {
             skip: (page - 1) * limit,
@@ -10,12 +10,14 @@ module.exports = {
 
         try {
             let listUser = await User.find({
-                where: { nickName: { contains: nickName ?? '' } },
+                where: {
+                    nickName: { contains: nickName ?? '' },
+                    id: { '!=': userId }
+                },
                 select: ['nickName'],
                 ...options
             })
 
-            console.log(listUser)
             return res.json({ err: 200, message: 'Success', data: listUser })
         } catch (error) {
             return res.json({ err: 500, message: error.message })
