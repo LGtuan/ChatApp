@@ -3,7 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="2dp">
 
         <ImageView
             android:id="@+id/image_message_item"
@@ -21,7 +22,8 @@
         <TextView
             android:id="@+id/text_message_item"
             android:background="@drawable/border"
-            android:padding="8dp"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="12dp"
             android:backgroundTint="@color/primary"
             android:textColor="@color/white"
             android:text=""

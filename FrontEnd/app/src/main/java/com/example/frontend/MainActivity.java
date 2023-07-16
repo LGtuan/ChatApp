@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.example.frontend.activity.HomeActivity;
 import com.example.frontend.activity.LoginActivity;
 import com.example.frontend.activity.RegisterActivity;
+import com.example.frontend.config.Constant;
 import com.example.frontend.config.Utilities;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-//        checkAuth();
+        //checkAuth();
     }
 
     private void checkAuth(){

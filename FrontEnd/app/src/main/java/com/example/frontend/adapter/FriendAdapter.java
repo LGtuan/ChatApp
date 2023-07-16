@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.frontend.R;
 import com.example.frontend.activity.ChatActivity;
+import com.example.frontend.config.Utilities;
 import com.example.frontend.model.Room;
 import com.example.frontend.model.User;
 
@@ -57,10 +58,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             itemView.setOnClickListener(v-> {
                 Log.d("Room", "click");
                 User user = listUser.get(getAdapterPosition());
-                Room room = new Room(user.getNickName());
+                Room room = new Room();
+                room.setUser1(Utilities.getStringLocalValue(context, "id"));
+                room.setUser2(user.getId());
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("room", room);
-                intent.putExtra("recipientId", user.getId());
                 context.startActivity(intent);
             });
         }

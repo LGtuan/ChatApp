@@ -8,22 +8,42 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.frontend.R;
+import com.example.frontend.api.RequestApi;
+import com.example.frontend.config.Constant;
 import com.example.frontend.fragment.ChatListFragment;
 import com.example.frontend.fragment.CommunityFragment;
 import com.example.frontend.fragment.SettingFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static Socket SOCKET;
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        connectSocket();
+        JSONObject body = new JSONObject();
+        try {
+            RequestApi.sendSocketRequest("api/doubleChat/connectWithServer", this,body);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
@@ -46,6 +66,37 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     .commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+    }
+
+    private void connectSocket () {
+        try {
+            SOCKET = IO.socket(Constant.URL+"?__sails_io_sdk_version=0.11.0");
+            listenSocketEvent(SOCKET);
+            SOCKET.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void listenSocketEvent(Socket socket){
+        socket.on(Socket.EVENT_CONNECT, args -> Log.d("SocketIO", "connect"));
+        socket.on(Socket.EVENT_CONNECT_ERROR, args -> {
+            Exception e = (Exception) args[0];
+            Log.d("Socket ConnectError", e.getMessage());
+        });
+
+        socket.on("message", args -> {
+            Log.d("Socket Message", Arrays.toString(args));
+        });
+
+        socket.on("newChatRoom", args -> {
+            Log.d("Socket NewChatRoom", Arrays.toString(args));
+        });
+
+        socket.on("receiveMessage", args -> {
+            Log.d("Socket ReceiveMessage", Arrays.toString(args));
+        });
+
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.frontend.config;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 public class Utilities {
     private static ProgressDialog progressDialog; // loading dialog
@@ -23,5 +24,10 @@ public class Utilities {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    public static String getStringLocalValue(Context context, String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key,"");
     }
 }

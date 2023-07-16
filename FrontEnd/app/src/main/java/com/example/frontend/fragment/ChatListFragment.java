@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.android.volley.VolleyError;
 import com.example.frontend.R;
@@ -38,28 +37,28 @@ import java.util.Map;
 
 public class ChatListFragment extends Fragment {
 
-    private Button button;
-    public static Socket SOCKET;
-    private ArrayList<Room> listRoom = new ArrayList<>();
+    public static ArrayList<Room> LIST_ROOM = new ArrayList<>();
     private RecyclerView recyclerView;
-    private RoomAdapter roomAdapter;
+    private static RoomAdapter ROOM_ADAPTER;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        connectSocket();
         getListRoom();
     }
 
     private void getListRoom() {
-        String path = "api/doubleChat/getListRoom";
-        Map<String,String> params = new HashMap<>();
-        RequestApi.sendRequest(this.getContext(), path, params, new VolleyCallBack() {
+        LIST_ROOM = new ArrayList<>();
+        RequestApi.sendRequest(this.getContext(),
+                "api/doubleChat/getListRoom",
+                new HashMap<>(),
+                new VolleyCallBack() {
             @Override
             public void onSuccess(String json) {
                 try {
                     JSONObject jsonObject = new JSONObject(json);
+                    Log.e("JSON", jsonObject.toString());
                     if(jsonObject.getInt("err") == 200){
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
                         for(int i = 0;i<jsonArray.length(); i++){
@@ -72,9 +71,9 @@ public class ChatListFragment extends Fragment {
                                     roomJson.getString("user1"),
                                     roomJson.getString("user2")
                             );
-                            listRoom.add(room);
+                            LIST_ROOM.add(room);
                         }
-                        roomAdapter.notifyDataSetChanged();
+                        ROOM_ADAPTER.notifyDataSetChanged();
                     }else{
 
                     }
@@ -88,36 +87,6 @@ public class ChatListFragment extends Fragment {
                 Log.e("ABCD", error.toString());
                 Utilities.hideLoading();
             }
-        });
-    }
-
-    private void connectSocket () {
-        try {
-            SOCKET = IO.socket(Constant.URL+"?__sails_io_sdk_version=0.11.0");
-            listenSocketEvent(SOCKET);
-            SOCKET.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void listenSocketEvent(Socket socket){
-        socket.on(Socket.EVENT_CONNECT, args -> Log.d("SocketIO", "connect"));
-        socket.on(Socket.EVENT_CONNECT_ERROR, args -> {
-            Exception e = (Exception) args[0];
-            Log.d("SocketIO", e.getMessage());
-        });
-
-        socket.on("message", args -> {
-            Log.d("Message", Arrays.toString(args));
-        });
-
-        socket.on("newChatRoom", args -> {
-            Log.d("new chat room", Arrays.toString(args));
-        });
-
-        socket.on("receiveMessage", args -> {
-            Log.d("receive Message", Arrays.toString(args));
         });
     }
 
@@ -148,8 +117,8 @@ public class ChatListFragment extends Fragment {
 //        });
 
         recyclerView = rootView.findViewById(R.id.list_room_recyclerview);
-        roomAdapter = new RoomAdapter(getContext(), listRoom);
-        recyclerView.setAdapter(roomAdapter);
+        ROOM_ADAPTER = new RoomAdapter(getContext(), LIST_ROOM);
+        recyclerView.setAdapter(ROOM_ADAPTER);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return rootView;
