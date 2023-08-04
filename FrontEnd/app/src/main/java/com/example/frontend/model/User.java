@@ -7,6 +7,7 @@ public class User {
     private String nickName;
     private String phone;
     private String birthDay;
+    private String image;
 
     public User() {
     }
@@ -16,13 +17,20 @@ public class User {
         this.nickName = nickName;
     }
 
-    public User(String id, String email, String fullName, String nickName, String phone, String birthDay) {
+    public User(String id, String nickName, String image) {
+        this.id = id;
+        this.nickName = nickName;
+        this.image = image;
+    }
+
+    public User(String id, String email, String fullName, String nickName, String phone, String birthDay, String image) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.nickName = nickName;
         this.phone = phone;
         this.birthDay = birthDay;
+        this.image = image;
     }
 
     public String getId() {
@@ -71,5 +79,13 @@ public class User {
 
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

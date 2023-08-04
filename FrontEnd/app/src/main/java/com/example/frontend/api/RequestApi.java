@@ -31,7 +31,6 @@ public class RequestApi {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = Constant.URL + path;
-
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST, url,
                 callBack::onSuccess,

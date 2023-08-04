@@ -7,6 +7,7 @@
     android:paddingHorizontal="20dp">
 
     <ImageView
+        android:background="@drawable/circle_shape"
         android:id="@+id/image_friend_item"
         android:src="@drawable/user_icon"
         android:layout_width="50dp"

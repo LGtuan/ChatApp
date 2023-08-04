@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.frontend.R;
+import com.example.frontend.config.Constant;
 import com.example.frontend.model.Message;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,9 +41,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
-        holder.text.setText(listMessage.get(position).getContent());
-        if (!listMessage.get(position).getUserId().equals(userId)) {
+        Message message = listMessage.get(position);
+        holder.text.setText(message.getContent());
+        if (!message.getUser().getId().equals(userId)) {
             holder.view.setVisibility(View.GONE);
+            holder.image.setVisibility(View.VISIBLE);
+            if(position == 0){
+                Picasso.get()
+                        .load(Constant.URL+message.getUser().getImage())
+                        .into(holder.image);
+            }
+            else{
+                if(!listMessage.get(position-1).getUser().getId().equals(message.getUser().getId())){
+                    Picasso.get()
+                            .load(Constant.URL+message.getUser().getImage())
+                            .into(holder.image);
+                }else holder.image.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

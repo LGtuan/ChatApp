@@ -72,8 +72,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(String json) {
                 try {
                     JSONObject object = new JSONObject(json);
-                    JSONObject data = object.getJSONObject("data");
                     if(object.getInt("err") == 200){
+                        JSONObject data = object.getJSONObject("data");
                         SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences("auth",MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("accessToken", data.getString("accessToken"));
@@ -85,17 +85,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }else {
-
+                        String msg = object.getString("message");
+                        Utilities.showErrorMessage(LoginActivity.this, msg);
                     }
-                    Utilities.hideLoading();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                Utilities.hideLoading();
             }
 
             @Override
             public void onError(VolleyError error) {
-                Log.e("ABCD", error.toString());
                 Utilities.hideLoading();
             }
         });

@@ -7,6 +7,7 @@
     android:paddingVertical="2dp">
 
         <ImageView
+            android:background="@drawable/circle_shape"
             android:id="@+id/image_message_item"
             android:visibility="gone"
             android:layout_marginEnd="5dp"

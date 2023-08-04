@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:background="@color/primary"
         android:orientation="horizontal"
@@ -18,10 +18,19 @@
         <ImageButton
             android:id="@+id/btn_back_chat"
             android:layout_width="50dp"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:backgroundTint="@color/transparent"
             android:src="@drawable/back_icon"
             app:tint="@color/white" />
+
+        <ImageView
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="center"
+            android:id="@+id/image_room_chat"
+            android:src="@drawable/user_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
 
         <TextView
             android:id="@+id/txt_name_chat_activity"

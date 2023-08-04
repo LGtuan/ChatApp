@@ -56,7 +56,8 @@ public class FriendFragment extends Fragment {
                             JSONObject roomJson = jsonArray.getJSONObject(i);
                             User user = new User(
                                     roomJson.getString("id"),
-                                    roomJson.getString("nickName")
+                                    roomJson.getString("nickName"),
+                                    roomJson.getString("image")
                             );
                             listFriend.add(user);
                         }

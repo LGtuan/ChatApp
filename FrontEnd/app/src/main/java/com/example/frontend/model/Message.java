@@ -5,18 +5,18 @@ public class Message {
     private long createdAt;
     private long updatedAt;
     private String content;
-    private String userId;
+    private User user;
     private String room;
 
     public Message() {
     }
 
-    public Message(String id, long createdAt, long updatedAt, String content, String userId, String room) {
+    public Message(String id, long createdAt, long updatedAt, String content, User user, String room) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.content = content;
-        this.userId = userId;
+        this.user = user;
         this.room = room;
     }
 
@@ -52,19 +52,19 @@ public class Message {
         this.content = content;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getRoom() {
         return room;
     }
 
     public void setRoom(String room) {
         this.room = room;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
