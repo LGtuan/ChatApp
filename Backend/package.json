@@ -21,7 +21,8 @@
     "sails-hook-orm": "^4.0.0",
     "sails-hook-sockets": "^2.0.0",
     "sails-mongo": "^2.0.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "waterline": "Atlantis-Software/waterline#deepPopulate"
   },
   "devDependencies": {
     "eslint": "5.16.0"

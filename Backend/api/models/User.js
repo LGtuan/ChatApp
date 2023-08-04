@@ -23,6 +23,7 @@ module.exports = {
     birthDay: { type: 'number' },
     accessToken: { type: 'string' },
     lastLogin: { type: 'number' },
+    image: { type: 'string', defaultsTo: '' }
     // rooms: {
     //   collection: 'room',
     //   via: 'user',

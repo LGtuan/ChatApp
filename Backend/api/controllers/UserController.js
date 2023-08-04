@@ -14,7 +14,7 @@ module.exports = {
                     nickName: { contains: nickName ?? '' },
                     id: { '!=': userId }
                 },
-                select: ['nickName'],
+                select: ['nickName', 'image'],
                 ...options
             })
 

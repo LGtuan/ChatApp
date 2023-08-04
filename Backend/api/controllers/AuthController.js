@@ -6,8 +6,6 @@ module.exports = {
     async login(req, res) {
         const { email, password } = req.body
         try {
-            User.validate('email', email)
-            User.validate('password', password)
 
             let userExisting = await User.findOne({ email: email ?? '' });
             if (!userExisting) {

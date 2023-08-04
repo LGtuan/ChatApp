@@ -1,75 +1,13 @@
 module.exports = {
-    // startChat: async function (req, res) {
-    //     const senderId = req.body.userId;
-    //     const recipientId = req.body.recipientId;
-
-    //     if(!recipientId)
-    //         return res.json({message: 'Invlaid data request', err: 400})
-
-    //     try {
-    //         // Check if a chat room already exists between sender and recipient
-    //         const chatRoom = await DoubleRoom.findOne({
-    //             or: [
-    //                 { user1: senderId, user2: recipientId },
-    //                 { user1: recipientId, user2: senderId },
-    //             ],
-    //         });
-
-    //         // Create a new chat room if it doesn't exist
-    //         if (!chatRoom) {
-    //             const newChatRoom = await DoubleRoom.create({
-    //                 user1: senderId,
-    //                 user2: recipientId,
-    //                 name: 'double room'
-    //             }).fetch();
-
-    //             console.log('create room', newChatRoom)
-
-
-    //             sails.sockets.broadcast(newChatRoom.id, 'newChatRoom', {
-    //                 roomId: newChatRoom.id,
-    //                 senderId: senderId,
-    //                 recipientId: recipientId,
-    //             });
-    //         }
-
-    //         sendMessage(req, res)
-    //     } catch (error) {
-    //         console.log(error.message)
-    //         return res.json({ err: 500, message: error.message })
-    //     }
-    // },
 
     sendMessage: async function (req, res) {
         if (!req.isSocket)
             return res.json({ message: 'Need a socket request', err: 200 })
         let { roomId, userId: senderId, recipientId, content } = req.body
-
-        console.log(senderId, content, recipientId)
-        if (!senderId || !content || !recipientId)
+        if (!senderId || !content || !recipientId || !roomId)
             return res.json({ err: 400, message: 'Invalid data request' })
 
-        console.log('send message')
         try {
-            if (!roomId) {
-                const chatRoom = await DoubleRoom.findOne({
-                    or: [
-                        { user1: senderId, user2: recipientId },
-                        { user1: recipientId, user2: senderId },
-                    ],
-                });
-                if (!chatRoom) {
-                    const newChatRoom = await DoubleRoom.create({
-                        user1: senderId,
-                        user2: recipientId,
-                        name: 'The room'
-                    }).fetch();
-                    roomId = newChatRoom.id
-                    sails.sockets.broadcast(recipientId, "newChatRoom", newChatRoom)
-                    sails.sockets.broadcast(senderId, "newChatRoom", newChatRoom)
-                } else roomId = chatRoom.id
-            }
-
             const chatMessage = await Message.create({
                 user: senderId,
                 content,
@@ -77,59 +15,67 @@ module.exports = {
             }).fetch()
             await DoubleRoom.addToCollection(roomId, 'messages', chatMessage.id)
 
+            const sender = await User.findOne({
+                where: { id: senderId },
+                select: ['image', 'nickName']
+            })
+            chatMessage.user = sender
             sails.sockets.broadcast(senderId, 'receiveMessage', chatMessage);
             sails.sockets.broadcast(recipientId, 'receiveMessage', chatMessage);
 
             return res.json({ message: 'Send message success', err: 200 })
         } catch (error) {
-            console.log(error.message)
             return res.json({ err: 500, message: error.message })
         }
     },
 
     getListMessage: async function (req, res) {
-        const { roomId, userId, user1, user2 } = req.body
-
+        let { roomId, userId, user2 } = req.body
         const { page = 1, limit = 10 } = req.query
-        const options = {
-            skip: (page - 1) * limit,
-            limit: 10
-        }
-
-        if (!userId)
-            return res.json({ err: 400, message: 'Invalid roomId or userId' })
-        if ((!user1 && !user2) && !roomId)
-            return res.json({ err: 400, message: 'Invalid data request' })
+        const options = { skip: (page - 1) * limit, limit: 10 }
+        if (!user2 && !roomId) return res.json({ err: 400, message: 'Invalid data request' })
 
         try {
-            let whereClause = {
-                id: roomId,
-                or: [
-                    { user1, user2 },
-                    { user1: user2, user2: user1 },
-                ]
+            let sendOptions = { roomId: '' }
+
+            if (!roomId) {
+                const chatRoom = await DoubleRoom.findOne({
+                    or: [
+                        { user1: userId, user2 },
+                        { user1: user2, user2: userId }
+                    ],
+                });
+                if (!chatRoom) {
+                    const newChatRoom = await DoubleRoom.create({
+                        user1: userId,
+                        user2: user2,
+                        name: 'The room'
+                    }).fetch();
+                    roomId = newChatRoom.id
+                } else roomId = chatRoom.id
+                sendOptions.roomId = roomId // need send roomId to client when roomId in data request null
             }
-            if (!roomId) delete whereClause.id
-            else delete whereClause.or
 
-            let room = await DoubleRoom.findOne({ where: whereClause })
-                .populate('messages', {
-                    ...options,
-                    sort: 'createdAt DESC',
-                })
-
-            if (!room) return res.json({ err: 404, message: 'Room not found' })
-
-            return res.json({
-                data: room.messages,
-                message: 'Success',
-                err: 200
+            const listUserInRoom = await User.find({
+                where: { id: [userId, user2] },
+                select: ['nickName', 'image']
             })
+            if (listUserInRoom.length <= 1) return res.json({ err: 401, message: 'User not found' })
 
+            let listMessage = await Message.find({
+                where: { doubleRoom: roomId },
+                // ...options
+            })
+            for (message of listMessage) {
+                if (message.user == listUserInRoom[0].id) {
+                    message.user = listUserInRoom[0]
+                } else message.user = listUserInRoom[1]
+            }
+
+            return res.json({ data: listMessage, message: 'Success', err: 200, ...sendOptions })
         } catch (error) {
             return res.json({ err: 500, message: error.message })
         }
-
     },
 
     getListRoom: async function (req, res) {
@@ -141,7 +87,7 @@ module.exports = {
                     { user1: userId },
                     { user2: userId }
                 ]
-            }).sort('updatedAt DESC')
+            }).sort('updatedAt ASC')
 
             return res.json({ data: listRoom, message: 'Success', err: 200 })
         } catch (error) {
