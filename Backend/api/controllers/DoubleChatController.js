@@ -30,14 +30,11 @@ module.exports = {
     },
 
     getListMessage: async function (req, res) {
-        let { roomId, userId, user2 } = req.body
-        const { page = 1, limit = 10 } = req.query
-        const options = { skip: (page - 1) * limit, limit: 10 }
+        let { roomId, userId, user2, skip = 0, limit = 20 } = req.body
         if (!user2 && !roomId) return res.json({ err: 400, message: 'Invalid data request' })
 
         try {
             let sendOptions = { roomId: '' }
-
             if (!roomId) {
                 const chatRoom = await DoubleRoom.findOne({
                     or: [
@@ -62,17 +59,22 @@ module.exports = {
             })
             if (listUserInRoom.length <= 1) return res.json({ err: 401, message: 'User not found' })
 
-            let listMessage = await Message.find({
-                where: { doubleRoom: roomId },
-                // ...options
-            })
-            for (message of listMessage) {
+            let listMessage = await Message.find({ where: { doubleRoom: roomId } })
+
+            let listNewMessage = []
+            let to = listMessage.length - parseInt(skip)
+            let from = to - limit < 0 ? 0 : to - limit
+            for (let i = from; i < to; i++) {
+                listNewMessage.push(listMessage[i])
+            }
+
+            for (message of listNewMessage) {
                 if (message.user == listUserInRoom[0].id) {
                     message.user = listUserInRoom[0]
                 } else message.user = listUserInRoom[1]
             }
 
-            return res.json({ data: listMessage, message: 'Success', err: 200, ...sendOptions })
+            return res.json({ data: listNewMessage, message: 'Success', err: 200, ...sendOptions })
         } catch (error) {
             return res.json({ err: 500, message: error.message })
         }

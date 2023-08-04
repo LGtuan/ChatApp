@@ -1,5 +1,6 @@
 package com.example.frontend.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +66,7 @@ public class ChatActivity extends AppCompatActivity {
 
         setUpRecyclerView();
         listenSocketEvent();
-        getListMessage();
+        getListMessage(false);
     }
 
     private void initView() {
@@ -87,10 +89,33 @@ public class ChatActivity extends AppCompatActivity {
     private void setUpRecyclerView() {
         messageAdapter = new MessageAdapter(this, listMessage);
         recyclerView.setAdapter(messageAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//
+//                if (linearLayoutManager != null
+//                        && linearLayoutManager.findLastCompletelyVisibleItemPosition() == 0) {
+//                    getListMessage(true);
+//                }
+//            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (recyclerView.computeVerticalScrollOffset() == 0) {
+                        getListMessage(true);
+                    }
+                }
+            }
+        });
     }
 
     private void listenSocketEvent() {
@@ -116,7 +141,11 @@ public class ChatActivity extends AppCompatActivity {
                     );
                     if (!message.getRoom().equals(room.getId())) return;
                     listMessage.add(message);
-                    messageAdapter.notifyDataSetChanged();
+                    if (listMessage.size() > 1) {
+                        messageAdapter.notifyItemChanged(listMessage.size() - 2);
+                    }
+                    messageAdapter.notifyItemInserted(listMessage.size() - 1);
+                    recyclerView.scrollToPosition(listMessage.size() - 1);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -138,12 +167,13 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void getListMessage() {
+    private void getListMessage(boolean isLoadMore) {
         String path = "api/doubleChat/getListMessage";
         Map<String, String> params = new HashMap<>();
         params.put("user2", recipientId);
         if (room.getId() != null) {
             params.put("roomId", room.getId());
+            params.put("skip", String.valueOf(listMessage.size()));
         }
 
         RequestApi.sendRequest(this, path, params, new VolleyCallBack() {
@@ -155,6 +185,7 @@ public class ChatActivity extends AppCompatActivity {
                         String roomId = jsonObject.getString("roomId");
                         if (!roomId.equals("")) room.setId(roomId);
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        ArrayList<Message> loadMoreList = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject msgJson = jsonArray.getJSONObject(i);
                             JSONObject userJson = msgJson.getJSONObject("user");
@@ -171,11 +202,20 @@ public class ChatActivity extends AppCompatActivity {
                                     user,
                                     msgJson.getString("doubleRoom")
                             );
-                            listMessage.add(message);
+                            if(!isLoadMore){
+                                listMessage.add(message);
+                            }else{
+                                loadMoreList.add(message);
+                            }
                         }
-                        messageAdapter.notifyDataSetChanged();
+                        if(!isLoadMore){
+                            messageAdapter.notifyItemRangeInserted(0,listMessage.size()-1);
+                        }else{
+                            listMessage.addAll(0,loadMoreList);
+                            messageAdapter.notifyItemRangeInserted(0, loadMoreList.size()-1);
+                        }
                     } else {
-
+                        Utilities.showErrorMessage(ChatActivity.this,jsonObject.getString("message"));
                     }
                     Utilities.hideLoading();
                 } catch (JSONException e) {

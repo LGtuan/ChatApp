@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,18 +47,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if (!message.getUser().getId().equals(userId)) {
             holder.view.setVisibility(View.GONE);
             holder.image.setVisibility(View.VISIBLE);
-            if(position == 0){
+            boolean showAvatar = position == listMessage.size()-1;
+            if(position+1 < listMessage.size() && !showAvatar){
+                showAvatar = !listMessage.get(position+1).getUser().getId().equals(message.getUser().getId());
+            }
+            if(showAvatar){
                 Picasso.get()
                         .load(Constant.URL+message.getUser().getImage())
                         .into(holder.image);
-            }
-            else{
-                if(!listMessage.get(position-1).getUser().getId().equals(message.getUser().getId())){
-                    Picasso.get()
-                            .load(Constant.URL+message.getUser().getImage())
-                            .into(holder.image);
-                }else holder.image.setVisibility(View.INVISIBLE);
-            }
+            }else{holder.image.setVisibility(View.INVISIBLE);}
+        }else {
+            holder.view.setVisibility(View.INVISIBLE);
+            holder.image.setVisibility(View.INVISIBLE);
         }
     }
 
