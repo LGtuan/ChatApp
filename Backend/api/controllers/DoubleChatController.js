@@ -1,3 +1,5 @@
+const _ = require('@sailshq/lodash')
+
 module.exports = {
 
     sendMessage: async function (req, res) {
@@ -22,6 +24,10 @@ module.exports = {
             chatMessage.user = sender
             sails.sockets.broadcast(senderId, 'receiveMessage', chatMessage);
             sails.sockets.broadcast(recipientId, 'receiveMessage', chatMessage);
+            await DoubleRoom.updateOne({ id: roomId })
+                .set({
+                    lastMessage: chatMessage.content
+                })
 
             return res.json({ message: 'Send message success', err: 200 })
         } catch (error) {
@@ -81,19 +87,40 @@ module.exports = {
     },
 
     getListRoom: async function (req, res) {
-        const { userId } = req.body
+        const { userId, skip = 0, limit = 20 } = req.body
 
         try {
             let listRoom = await DoubleRoom.find({
-                or: [
-                    { user1: userId },
-                    { user2: userId }
-                ]
-            }).sort('updatedAt ASC')
+                where: {
+                    or: [
+                        { user1: userId },
+                        { user2: userId }
+                    ],
+                },
+                skip, limit
+            }).sort('updatedAt DESC')
 
-            return res.json({ data: listRoom, message: 'Success', err: 200 })
+            let result = []
+            for (let room of listRoom) {
+                if ((room.user1 == userId || room.user2 == userId) && room.lastMessage != '') {
+                    if (room.roomType = 'double') {
+                        let userIdNeedFind = room.user1 == userId ? room.user2 : room.user1
+                        let user = await User.findOne({
+                            where: { id: userIdNeedFind },
+                            select: ['image', 'nickName']
+                        })
+                        if (!user) continue
+                        room.image = user.image
+                        room.name = user.nickName
+                    }
+                    result.push(room)
+                }
+            }
+
+            console.log(result)
+
+            return res.json({ data: result, message: 'Success', err: 200 })
         } catch (error) {
-            console.log(error.message)
             return res.json({ err: 500, message: error.message })
         }
     },

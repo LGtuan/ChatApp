@@ -12,6 +12,7 @@ import com.example.frontend.adapter.MessageAdapter;
 import com.example.frontend.api.RequestApi;
 import com.example.frontend.api.VolleyCallBack;
 import com.example.frontend.config.Utilities;
+import com.example.frontend.fragment.ChatListFragment;
 import com.example.frontend.model.Message;
 import com.example.frontend.model.Room;
 import com.example.frontend.model.User;
@@ -110,7 +111,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (recyclerView.computeVerticalScrollOffset() == 0) {
+                    if (recyclerView.computeVerticalScrollOffset() == 0 && listMessage.size() >= 20) {
                         getListMessage(true);
                     }
                 }

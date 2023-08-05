@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.frontend.R;
 import com.example.frontend.activity.ChatActivity;
+import com.example.frontend.config.Constant;
 import com.example.frontend.model.Room;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtName.setText(list.get(position).getName());
-        holder.txtChat.setText(list.get(position).getName());
+        holder.txtChat.setText(list.get(position).getLastMessage());
+        Picasso.get()
+                .load(Constant.URL + list.get(position).getImage())
+                .into(holder.img);
     }
 
     @Override
@@ -52,7 +57,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
             super(itemView);
             img = itemView.findViewById(R.id.image_chat_item);
             txtName = itemView.findViewById(R.id.txt_name_chat_item);
-            txtChat = itemView.findViewById(R.id.txt_chat_chat_item);
+            txtChat = itemView.findViewById(R.id.txt_last_msg_chat_item);
 
             itemView.setOnClickListener(v-> {
                 Room room = list.get(getAdapterPosition());

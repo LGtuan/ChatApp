@@ -9,6 +9,8 @@ public class Message {
     private String room;
 
     public Message() {
+        id = "";
+        content = "";
     }
 
     public Message(String id, long createdAt, long updatedAt, String content, User user, String room) {
@@ -18,6 +20,12 @@ public class Message {
         this.content = content;
         this.user = user;
         this.room = room;
+    }
+
+    public Message(String id, String content, User user) {
+        this.id = id;
+        this.content = content;
+        this.user = user;
     }
 
     public String getId() {

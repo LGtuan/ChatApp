@@ -8,7 +8,10 @@ module.exports = {
         messages: {
             collection: 'message',
             via: 'doubleRoom',
-        }
+        },
+        image: { type: 'string', defaultsTo: 'images/roomchat.png' },
+        roomType: { type: 'string', defaultsTo: 'double' },
+        lastMessage: { type: 'string', defaultsTo: '' }
     },
 
 };
